@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="651918ec-0e6e-4d0e-b6c0-2546b067c7fc" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="8ce4288b-3b0b-4ac9-8c88-0e9ef544cc65" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="notification123@" database="db1" />
+	</db:config>
+	<flow name="datababe-integrationFlow" doc:id="1a3fd0e8-0919-42b5-b9d0-918aaf282722" >
+		<http:listener doc:name="Listener" doc:id="14510a2e-bbb0-412f-b905-962313d42e8c" config-ref="HTTP_Listener_config" path="/database"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c8100afb-e554-4025-8429-e28506a544dd" message="start the flow"/>
+		<db:select doc:name="Select" doc:id="7388336b-a3b6-45c7-b663-84c3b4c09719" config-ref="Database_Config">
+			<db:sql ><![CDATA[select *from db1.familymembers;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="339feafd-077a-4b3c-a157-bcd2eb432566" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="bfe86261-1d36-4a43-a5ba-b0d2d76ca6e4" message="end of the flow"/>
+	</flow>
+</mule>
