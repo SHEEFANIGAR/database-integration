@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</db:config>
 	<flow name="datababe-integrationFlow" doc:id="1a3fd0e8-0919-42b5-b9d0-918aaf282722" >
 		<http:listener doc:name="Listener" doc:id="14510a2e-bbb0-412f-b905-962313d42e8c" config-ref="HTTP_Listener_config" path="/database"/>
-		<logger level="INFO" doc:name="Logger" doc:id="c8100afb-e554-4025-8429-e28506a544dd" message="start the flow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c8100afb-e554-4025-8429-e28506a544dd" message="Start of  the Flow"/>
 		<db:select doc:name="Select" doc:id="7388336b-a3b6-45c7-b663-84c3b4c09719" config-ref="Database_Config">
 			<db:sql ><![CDATA[select *from db1.familymembers;]]></db:sql>
 		</db:select>
